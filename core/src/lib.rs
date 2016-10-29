@@ -3,6 +3,17 @@ extern crate log;
 extern crate time;
 extern crate art;
 extern crate systems;
+extern crate events;
+extern crate gfx;
+extern crate graphics;
+extern crate specs;
+extern crate utils;
+extern crate event_core;
+extern crate components;
+#[cfg(feature = "g_glutin")]
+extern crate glutin;
+#[cfg(feature = "g_sdl2")]
+extern crate sdl2;
 
 // pub mod crates {
 //     pub use ::{art, systems, time};
@@ -25,12 +36,11 @@ mod game;
 mod handle_events;
 
 use event_clump::{BackEventClump, make_event_clumps};
-use event_enums::main_x_ai::{MainFromAi, MainToAi};
-use event_enums::main_x_control::MainFromControl;
+// use event_enums::main_x_ai::{MainFromAi, MainToAi};
 #[allow(unused_imports)]
-use event_enums::main_x_game::MainToGame;
+use events::main_x_game::MainToGame;
 #[allow(unused_imports)]
-use event_enums::main_x_render::{MainFromRender, MainToRender};
+use events::main_x_render::{MainFromRender, MainToRender};
 use game::Game;
 #[allow(unused_imports)]
 use gfx::Device;
@@ -117,26 +127,9 @@ fn start_no_render(setup: SetupNoRender, fixed_delta: Option<f64>) {
     });
 
     'main: loop {
-        if let Some(event) = front_event_clump.get_mut_control()
-            .unwrap_or_else(|| panic!("Control was none"))
-            .try_recv_from() {
-            match event {
-                MainFromControl::Save => {
-                    front_event_clump.get_mut_ai()
-                        .unwrap_or_else(|| panic!("Ai was none"))
-                        .send_to(MainToAi::Save);
-                    match front_event_clump.get_mut_ai()
-                        .unwrap_or_else(|| panic!("Ai was none"))
-                        .recv_from() {
-                        MainFromAi::Saved => warn!("Autosaved"),
-                    };
-                }
-            }
-        }
-
         if let Some(event) = front_event_clump.get_mut_game()
             .unwrap_or_else(|| panic!("Game was none"))
-            .try_recv_from() {
+            .try_recv() {
             match event {
 
             }
@@ -162,31 +155,29 @@ fn start_window<O>(setup: Setup, fixed_delta: Option<f64>, screen_size: (u32, u3
 
     let (width, height): (u32, u32) = screen_size;
 
-    // warn!("Making Window");
+    debug!("Making Window");
     let mut gfx_window = build_window((title, width, height));
 
-    // warn!("Making Encoder");
+    debug!("Making Encoder");
     let encoder: GlEncoder = gfx_window.get_mut_factory().create_command_buffer().into();
 
     {
         let mut render_event_core = front_event_clump.get_mut_render()
             .unwrap_or_else(|| panic!("Render was none"));
 
-        // warn!("Sending Empty Encoder");
-        render_event_core.send_to(MainToRender::Encoder(encoder.clone_empty()));
-        // warn!("Sending Encoder");
-        render_event_core.send_to(MainToRender::Encoder(encoder));
+        debug!("Sending Empty Encoder");
+        render_event_core.send(MainToRender::Encoder(encoder.clone_empty()));
+        debug!("Sending Encoder");
+        render_event_core.send(MainToRender::Encoder(encoder));
     }
 
     let out_color = gfx_window.get_out_color().clone();
     let out_depth = gfx_window.get_out_depth().clone();
 
-    // warn!("Making Game");
-    // let game = Game::new_no_render(back_event_clump);
-
+    debug!("Making Game");
     let game = Game::new(setup, gfx_window.get_mut_factory(), back_event_clump, ortho.as_ref().clone(), out_color, out_depth, fixed_delta);
 
-    // warn!("Making Game Thread");
+    debug!("Making Game Thread");
     let game_handle = thread::spawn(|| {
         let mut game = game;
         while game.frame() {
@@ -194,64 +185,40 @@ fn start_window<O>(setup: Setup, fixed_delta: Option<f64>, screen_size: (u32, u3
     });
 
     'main: loop {
-        // warn!("Main Loop");
+        debug!("Main Loop");
         if let Some(event) = front_event_clump.get_mut_render()
             .unwrap_or_else(|| panic!("Render was none"))
-            .try_recv_from() {
+            .try_recv() {
             match event {
                 MainFromRender::Encoder(mut encoder) => {
                     if handle_events(&mut gfx_window, &mut front_event_clump) {
                         front_event_clump.get_mut_render()
                             .unwrap_or_else(|| panic!("Render was none"))
-                            .send_to(MainToRender::Encoder(encoder));
+                            .send(MainToRender::Encoder(encoder));
                         break 'main;
                     }
 
                     encoder.flush(gfx_window.get_mut_device());
                     front_event_clump.get_mut_render()
                         .unwrap_or_else(|| panic!("Render was none"))
-                        .send_to(MainToRender::Encoder(encoder));
+                        .send(MainToRender::Encoder(encoder));
                     gfx_window.swap_buffers();
                     gfx_window.get_mut_device().cleanup();
                 }
             }
         }
 
-        if let Some(event) = front_event_clump.get_mut_control()
-            .unwrap_or_else(|| panic!("Control was none"))
-            .try_recv_from() {
-            match event {
-                MainFromControl::Save => {
-                    front_event_clump.get_mut_ai()
-                        .unwrap_or_else(|| panic!("Ai was none"))
-                        .send_to(MainToAi::Save);
-                    match front_event_clump.get_mut_ai()
-                        .unwrap_or_else(|| panic!("Ai was none"))
-                        .recv_from() {
-                        MainFromAi::Saved => warn!("Autosaved"),
-                    };
-                }
-            }
-        }
-
         if let Some(event) = front_event_clump.get_mut_game()
             .unwrap_or_else(|| panic!("Game was none"))
-            .try_recv_from() {
+            .try_recv() {
             match event {
 
             }
-        }
-    }
-
-    front_event_clump.get_mut_ai().unwrap_or_else(|| panic!("Ai was none")).send_to(MainToAi::Save);
-    match front_event_clump.get_mut_ai().unwrap_or_else(|| panic!("Ai was none")).recv_from() {
-        MainFromAi::Saved => {
-            warn!("Tried to save, might have worked");
         }
     }
     front_event_clump.get_mut_game()
         .unwrap_or_else(|| panic!("Game was none"))
-        .send_to(MainToGame::Exit);
+        .send(MainToGame::Exit);
 
     game_handle.join().unwrap_or_else(|err| panic!("Error: {:?}", err));
 }

@@ -3,9 +3,18 @@ name = "core"
 version = "0.1.0"
 dependencies = [
  "art 0.1.0",
+ "components 0.1.0",
+ "event_core 0.1.0",
+ "events 0.1.0",
+ "gfx 0.12.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "glutin 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "graphics 0.1.0",
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sdl2 0.18.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "specs 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "systems 0.1.0",
  "time 0.1.35 (registry+https://github.com/rust-lang/crates.io-index)",
+ "utils 0.1.0",
 ]
 
 [[package]]
@@ -22,6 +31,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "art"
 version = "0.1.0"
 dependencies = [
+ "gfx 0.12.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "graphics 0.1.0",
 ]
 
@@ -95,6 +105,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "components"
 version = "0.1.0"
 dependencies = [
+ "cgmath 0.12.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "specs 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "utils 0.1.0",
 ]
@@ -178,14 +189,15 @@ dependencies = [
 ]
 
 [[package]]
-name = "event"
+name = "event_core"
 version = "0.1.0"
 
 [[package]]
-name = "event_enums"
+name = "events"
 version = "0.1.0"
 dependencies = [
  "graphics 0.1.0",
+ "utils 0.1.0",
 ]
 
 [[package]]
@@ -489,16 +501,6 @@ version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
-name = "neural"
-version = "0.1.0"
-dependencies = [
- "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
- "num 0.1.36 (registry+https://github.com/rust-lang/crates.io-index)",
- "rand 0.3.14 (registry+https://github.com/rust-lang/crates.io-index)",
- "utils 0.1.0",
-]
-
-[[package]]
 name = "num"
 version = "0.1.36"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -732,11 +734,16 @@ name = "systems"
 version = "0.1.0"
 dependencies = [
  "components 0.1.0",
- "event 0.1.0",
- "event_enums 0.1.0",
+ "event_core 0.1.0",
+ "events 0.1.0",
  "find_folder 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "gfx 0.12.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "glutin 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "graphics 0.1.0",
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
- "neural 0.1.0",
+ "sdl2 0.18.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "specs 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "utils 0.1.0",
 ]
 
 [[package]]

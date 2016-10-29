@@ -1,9 +1,9 @@
 use ::{Setup, SetupNoRender};
-use components::{Camera, CompMoving, CompPlayer, Gui, RenderData, RenderId, Transform};
-use event::BackChannel;
+use components::{Camera, CompMoving, CompPlayer, RenderData, RenderId, Transform};
 
 use event_clump::BackEventClump;
-use event_enums::main_x_game::{MainFromGame, MainToGame};
+use event_core::two_way_channel::BackChannel;
+use events::main_x_game::{MainFromGame, MainToGame};
 use graphics::{GlFactory, OutColor, OutDepth};
 use specs::{Planner, World};
 
@@ -30,7 +30,6 @@ impl Game {
             world.register::<RenderData>();
             world.register::<RenderId>();
             world.register::<Transform>();
-            world.register::<Gui>();
 
             Planner::<Delta>::new(world, 8)
         };
@@ -112,7 +111,6 @@ impl Game {
             world.register::<RenderData>();
             world.register::<RenderId>();
             world.register::<Transform>();
-            world.register::<Gui>();
 
             Planner::<Delta>::new(world, 8)
         };
@@ -233,7 +231,7 @@ impl Game {
         self.planner.dispatch(delta);
         self.fps_counter.frame(delta);
 
-        while let Some(event) = self.main_back_channel.try_recv_to() {
+        while let Some(event) = self.main_back_channel.try_recv() {
             match event {
                 MainToGame::Exit => return false,
             }

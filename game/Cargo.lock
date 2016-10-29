@@ -2,9 +2,19 @@
 name = "game"
 version = "0.1.0"
 dependencies = [
+ "art 0.1.0",
+ "cgmath 0.12.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "components 0.1.0",
  "core 0.1.0",
  "env_logger 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "event_core 0.1.0",
+ "events 0.1.0",
+ "find_folder 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "graphics 0.1.0",
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "specs 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "systems 0.1.0",
+ "utils 0.1.0",
 ]
 
 [[package]]
@@ -29,6 +39,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "art"
 version = "0.1.0"
 dependencies = [
+ "gfx 0.12.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "graphics 0.1.0",
 ]
 
@@ -112,9 +123,18 @@ name = "core"
 version = "0.1.0"
 dependencies = [
  "art 0.1.0",
+ "components 0.1.0",
+ "event_core 0.1.0",
+ "events 0.1.0",
+ "gfx 0.12.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "glutin 0.6.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "graphics 0.1.0",
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sdl2 0.18.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "specs 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "systems 0.1.0",
  "time 0.1.35 (registry+https://github.com/rust-lang/crates.io-index)",
+ "utils 0.1.0",
 ]
 
 [[package]]

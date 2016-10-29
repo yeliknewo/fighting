@@ -4,4 +4,10 @@ version = "0.1.0"
 authors = ["Kiley Owen <yelikdev@gmail.com>"]
 
 [dependencies]
+gfx = "0.12.1"
+
 graphics = { path="../graphics" }
+
+[features]
+g_glutin = ["graphics/g_glutin"]
+g_sdl2 = ["graphics/g_sdl2"]

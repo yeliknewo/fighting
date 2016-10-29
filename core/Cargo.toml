@@ -6,9 +6,18 @@ authors = ["Kiley Owen <yelikdev@gmail.com>"]
 [dependencies]
 log = "0.3.6"
 time = "0.1.35"
+gfx = "0.12.1"
+specs = "0.7.0"
+glutin = { version = "0.6.1", optional = true }
+sdl2 = { version = "0.18.0", optional = true }
+event_core = { path="../event_core" }
 art = { path="../art" }
 systems = { path="../systems" }
+events = { path="../events" }
+graphics = { path="../graphics" }
+utils = { path="../utils" }
+components = { path="../components" }
 
 [features]
-g_glutin = ["systems/g_glutin"]
-g_sdl2 = ["systems/g_sdl2"]
+g_glutin = ["glutin", "systems/g_glutin", "art/g_glutin", "graphics/g_glutin"]
+g_sdl2 = ["sdl2", "systems/g_sdl2", "art/g_sdl2", "graphics/g_sdl2"]

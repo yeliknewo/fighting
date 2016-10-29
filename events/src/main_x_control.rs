@@ -16,6 +16,8 @@ pub enum MainToControl<W> {
     L2(Player),
     R1(Player),
     R2(Player),
+    Start(Player),
+    Select(Player),
 }
 
 #[derive(Debug)]

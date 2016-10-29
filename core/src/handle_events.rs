@@ -29,7 +29,7 @@ pub mod glutin {
 #[cfg(feature = "g_sdl2")]
 pub mod sdl2 {
     use event_clump::FrontEventClump;
-    use event_enums::main_x_control::MainToControl;
+    use events::main_x_control::MainToControl;
     use graphics::GfxWindow;
     use graphics::rl_sdl2::{Extras, Window};
     use sdl2::controller::{Axis, Button, GameController};
@@ -66,22 +66,22 @@ pub mod sdl2 {
                             Some(Keycode::Up) => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Up(1.0, Player::One));
+                                    .send(MainToControl::Up(1.0, Player::One));
                             }
                             Some(Keycode::Down) => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Down(1.0, Player::One));
+                                    .send(MainToControl::Down(1.0, Player::One));
                             }
                             Some(Keycode::Left) => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Left(1.0, Player::One));
+                                    .send(MainToControl::Left(1.0, Player::One));
                             }
                             Some(Keycode::Right) => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Right(1.0, Player::One));
+                                    .send(MainToControl::Right(1.0, Player::One));
                             }
                             _ => {}
                         }
@@ -94,22 +94,22 @@ pub mod sdl2 {
                             Some(Keycode::Up) => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Up(0.0, Player::One));
+                                    .send(MainToControl::Up(0.0, Player::One));
                             }
                             Some(Keycode::Down) => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Down(0.0, Player::One));
+                                    .send(MainToControl::Down(0.0, Player::One));
                             }
                             Some(Keycode::Left) => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Left(0.0, Player::One));
+                                    .send(MainToControl::Left(0.0, Player::One));
                             }
                             Some(Keycode::Right) => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Right(0.0, Player::One));
+                                    .send(MainToControl::Right(0.0, Player::One));
                             }
                             _ => {}
                         }
@@ -120,7 +120,7 @@ pub mod sdl2 {
                             Axis::LeftX => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(if value >= 0 {
+                                    .send(if value >= 0 {
                                         MainToControl::JoyX((value as f64 / ::std::i16::MAX as f64),
                                                             match which {
                                                                 0 => Player::One,
@@ -139,7 +139,7 @@ pub mod sdl2 {
                             Axis::LeftY => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(if value >= 0 {
+                                    .send(if value >= 0 {
                                         MainToControl::JoyY(-(value as f64 / ::std::i16::MAX as f64),
                                                             match which {
                                                                 0 => Player::One,
@@ -164,52 +164,52 @@ pub mod sdl2 {
                             Button::DPadRight => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Right(1.0,
-                                                                  match which {
-                                                                      0 => Player::One,
-                                                                      1 => Player::Two,
-                                                                      _ => continue,
-                                                                  }));
+                                    .send(MainToControl::Right(1.0,
+                                                               match which {
+                                                                   0 => Player::One,
+                                                                   1 => Player::Two,
+                                                                   _ => continue,
+                                                               }));
                             }
                             Button::DPadLeft => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Left(1.0,
-                                                                 match which {
-                                                                     0 => Player::One,
-                                                                     1 => Player::Two,
-                                                                     _ => continue,
-                                                                 }));
+                                    .send(MainToControl::Left(1.0,
+                                                              match which {
+                                                                  0 => Player::One,
+                                                                  1 => Player::Two,
+                                                                  _ => continue,
+                                                              }));
                             }
                             Button::DPadUp => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Up(1.0,
-                                                               match which {
-                                                                   0 => Player::One,
-                                                                   1 => Player::Two,
-                                                                   _ => continue,
-                                                               }));
+                                    .send(MainToControl::Up(1.0,
+                                                            match which {
+                                                                0 => Player::One,
+                                                                1 => Player::Two,
+                                                                _ => continue,
+                                                            }));
                             }
                             Button::DPadDown => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Down(1.0,
-                                                                 match which {
-                                                                     0 => Player::One,
-                                                                     1 => Player::Two,
-                                                                     _ => continue,
-                                                                 }));
+                                    .send(MainToControl::Down(1.0,
+                                                              match which {
+                                                                  0 => Player::One,
+                                                                  1 => Player::Two,
+                                                                  _ => continue,
+                                                              }));
                             }
                             Button::A => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Up(1.0,
-                                                               match which {
-                                                                   0 => Player::One,
-                                                                   1 => Player::Two,
-                                                                   _ => continue,
-                                                               }));
+                                    .send(MainToControl::Up(1.0,
+                                                            match which {
+                                                                0 => Player::One,
+                                                                1 => Player::Two,
+                                                                _ => continue,
+                                                            }));
                             }
                             _ => {}
                         }
@@ -219,42 +219,42 @@ pub mod sdl2 {
                             Button::DPadRight => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Right(0.0,
-                                                                  match which {
-                                                                      0 => Player::One,
-                                                                      1 => Player::Two,
-                                                                      _ => continue,
-                                                                  }));
-                            }
-                            Button::DPadLeft => {
-                                front_event_clump.get_mut_control()
-                                    .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Left(0.0,
-                                                                 match which {
-                                                                     0 => Player::One,
-                                                                     1 => Player::Two,
-                                                                     _ => continue,
-                                                                 }));
-                            }
-                            Button::DPadUp => {
-                                front_event_clump.get_mut_control()
-                                    .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Up(0.0,
+                                    .send(MainToControl::Right(0.0,
                                                                match which {
                                                                    0 => Player::One,
                                                                    1 => Player::Two,
                                                                    _ => continue,
                                                                }));
                             }
+                            Button::DPadLeft => {
+                                front_event_clump.get_mut_control()
+                                    .unwrap_or_else(|| panic!("Control was none"))
+                                    .send(MainToControl::Left(0.0,
+                                                              match which {
+                                                                  0 => Player::One,
+                                                                  1 => Player::Two,
+                                                                  _ => continue,
+                                                              }));
+                            }
+                            Button::DPadUp => {
+                                front_event_clump.get_mut_control()
+                                    .unwrap_or_else(|| panic!("Control was none"))
+                                    .send(MainToControl::Up(0.0,
+                                                            match which {
+                                                                0 => Player::One,
+                                                                1 => Player::Two,
+                                                                _ => continue,
+                                                            }));
+                            }
                             Button::DPadDown => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send_to(MainToControl::Down(0.0,
-                                                                 match which {
-                                                                     0 => Player::One,
-                                                                     1 => Player::Two,
-                                                                     _ => continue,
-                                                                 }));
+                                    .send(MainToControl::Down(0.0,
+                                                              match which {
+                                                                  0 => Player::One,
+                                                                  1 => Player::Two,
+                                                                  _ => continue,
+                                                              }));
                             }
                             _ => {}
                         }

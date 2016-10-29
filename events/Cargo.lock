@@ -1,5 +1,5 @@
 [root]
-name = "base_events"
+name = "events"
 version = "0.1.0"
 dependencies = [
  "graphics 0.1.0",

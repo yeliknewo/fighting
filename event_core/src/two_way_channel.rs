@@ -23,15 +23,15 @@ impl<T, F> FrontChannel<T, F> {
         }
     }
 
-    pub fn send_to(&mut self, event: T) {
+    pub fn send(&mut self, event: T) {
         self.send_to.send(event).unwrap_or_else(|err| panic!("failed to send to because: {}", err));
     }
 
-    pub fn recv_from(&mut self) -> F {
+    pub fn recv(&mut self) -> F {
         self.recv_from.recv().unwrap_or_else(|err| panic!("recv from error: {}", err))
     }
 
-    pub fn try_recv_from(&mut self) -> Option<F> {
+    pub fn try_recv(&mut self) -> Option<F> {
         match self.recv_from.try_recv() {
             Ok(event) => Some(event),
             Err(TryRecvError::Empty) => None,
@@ -54,17 +54,17 @@ impl<T, F> BackChannel<T, F> {
         }
     }
 
-    pub fn send_from(&mut self, event: F) {
+    pub fn send(&mut self, event: F) {
         self.send_from
             .send(event)
             .unwrap_or_else(|err| panic!("failed to send from because: {}", err));
     }
 
-    pub fn recv_to(&mut self) -> T {
+    pub fn recv(&mut self) -> T {
         self.recv_to.recv().unwrap_or_else(|err| panic!("recv to error: {}", err))
     }
 
-    pub fn try_recv_to(&mut self) -> Option<T> {
+    pub fn try_recv(&mut self) -> Option<T> {
         match self.recv_to.try_recv() {
             Ok(event) => Some(event),
             Err(TryRecvError::Empty) => None,

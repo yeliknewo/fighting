@@ -20,7 +20,7 @@ systems = { path="../systems" }
 events = { path="../events" }
 
 [features]
-g_glutin = ["core/g_glutin"]
+g_glutin = ["core/g_glutin", "graphics/g_glutin", "art/g_glutin", "systems/g_glutin"]
 g_sdl2 = ["core/g_sdl2"]
 
 default = ["g_glutin"]

@@ -218,6 +218,7 @@ impl Game {
     }
 
     pub fn frame(&mut self) -> bool {
+        warn!("Game Loop");
         let delta = match self.delta {
             Some(delta) => delta,
             None => {
@@ -236,6 +237,8 @@ impl Game {
                 MainToGame::Exit => return false,
             }
         }
+
+        warn!("Finished Game Loop");
 
         true
     }

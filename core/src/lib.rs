@@ -191,6 +191,7 @@ fn start_window<O>(setup: Setup, fixed_delta: Option<f64>, screen_size: (u32, u3
             .try_recv() {
             match event {
                 MainFromRender::Encoder(mut encoder) => {
+                    warn!("Got Encoder");
                     if handle_events(&mut gfx_window, &mut front_event_clump) {
                         front_event_clump.get_mut_render()
                             .unwrap_or_else(|| panic!("Render was none"))

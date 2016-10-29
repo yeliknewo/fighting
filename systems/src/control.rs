@@ -98,6 +98,8 @@ impl ControlSystem {
 
 impl System<Delta> for ControlSystem {
     fn run(&mut self, arg: RunArg, delta_time: Delta) {
+        warn!("Started Control Run");
+
         self.time += delta_time;
 
         if self.time >= 300.0 {
@@ -110,12 +112,19 @@ impl System<Delta> for ControlSystem {
         while needs_fetch.iter().any(|item| *item) {
             if let Some(event) = self.main_channel.try_recv() {
                 self.process_main_event(&event);
+            } else {
                 needs_fetch[0] = false;
             }
         }
 
+        warn!("Control Got Events");
+
         self.trigger_repeats();
 
+        warn!("Control Handled Repeats");
+
         arg.fetch(|_| ());
+
+        warn!("Control Exiting");
     }
 }

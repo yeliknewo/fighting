@@ -1,3 +1,5 @@
+#[macro_use]
+extern crate log;
 extern crate core;
 extern crate utils;
 extern crate components;
@@ -26,8 +28,10 @@ pub mod player_system;
 fn main() {
     env_logger::init().unwrap_or_else(|err| panic!("Unable to Initate Env Logger: {}", err));
 
+    warn!("Starting Game");
+
     core::start(None,
-                Some(&"glutin".to_string()),
+                Some(&"glutin sdl2".to_string()),
                 (640, 640),
                 "PuzzleCity",
                 OrthographicHelper::new(1.0, -10.0, 10.0, 0.0, 10.0),
@@ -69,8 +73,11 @@ fn main() {
         planner.add_system(ControlSystem::new(events.take_control().unwrap_or_else(|| panic!("Control was none")), control_to_player_front_channel), "control", 30);
         planner.add_system(PlayerSystem::new(control_to_player_back_channel, 5.0, (|me, run_arg| player_system::basic_all_dir(me, run_arg))), "player", 20);
         planner.add_system(MovingSystem::new(), "moving", 15);
+
+        warn!("Finished Setup");
     }),
                 Box::new(|_planner, _events| {
                     panic!("Don't run without graphics");
                 }));
+    warn!("Game Exited");
 }

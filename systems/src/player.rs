@@ -1,7 +1,7 @@
 use cgmath::{Matrix4, Vector3};
 use cgmath::prelude::One;
 use components::{CompPlayer, PlayerPart, Transform};
-use components::player_part::PlayerPartId;
+use components::player_part::{PlayerPartId, PlayerState};
 use event_core::two_way_channel::BackChannel;
 use events::control_x_player::{ControlFromPlayer, ControlToPlayer};
 use specs::{Join, RunArg, System};
@@ -47,7 +47,7 @@ impl PlayerSystem {
 }
 
 impl System<Delta> for PlayerSystem {
-    fn run(&mut self, arg: RunArg, _delta_time: Delta) {
+    fn run(&mut self, arg: RunArg, delta_time: Delta) {
         let (players, mut player_parts, mut transforms) = arg.fetch(|w| (w.read::<CompPlayer>(), w.write::<PlayerPart>(), w.write::<Transform>()));
 
         let mut map = HashMap::new();
@@ -148,16 +148,37 @@ impl System<Delta> for PlayerSystem {
                 match player_part.get_id().clone() {
                     PlayerPartId::Arm => {
                         if player_move.punching {
-                            scale = scale * Matrix4::from_translation(Vector3::new(1.0, 0.0, 0.0));
-                            pos = pos * Matrix4::from_nonuniform_scale(0.0, 1.0, 1.0);
+                            if let Some(punching) = player_part.get_mut_state(&PlayerState::Punching) {
+                                *punching = (*punching + delta_time).max(0.0).min(5.0);
+                                scale = scale * Matrix4::from_translation(Vector3::new(1.0 * *punching as Coord, 0.0, 0.0));
+                                pos = pos * Matrix4::from_nonuniform_scale(1.0 - *punching as Coord, 1.0, 1.0);
+                            }
+                        } else {
+                            if let Some(punching) = player_part.get_mut_state(&PlayerState::Punching) {
+                                *punching = 0.0;
+                            }
                         }
                         if player_move.ducking {
-                            scale = scale * Matrix4::from_nonuniform_scale(1.0, 0.4, 1.0);
+                            if let Some(ducking) = player_part.get_mut_state(&PlayerState::Ducking) {
+                                *ducking = (*ducking + delta_time).max(0.0).min(1.0);
+                                scale = scale * Matrix4::from_nonuniform_scale(1.0, 1.0 - 0.6 * (*ducking as Coord), 1.0);
+                            }
+                        } else {
+                            if let Some(ducking) = player_part.get_mut_state(&PlayerState::Ducking) {
+                                *ducking = 0.0;
+                            }
                         }
                     }
                     PlayerPartId::Body => {
                         if player_move.ducking {
-                            scale = scale * Matrix4::from_nonuniform_scale(1.0, 0.4, 1.0);
+                            if let Some(ducking) = player_part.get_mut_state(&PlayerState::Ducking) {
+                                *ducking = (*ducking + delta_time).max(0.0).min(1.0);
+                                scale = scale * Matrix4::from_nonuniform_scale(1.0, 1.0 - 0.6 * (*ducking as Coord), 1.0);
+                            }
+                        } else {
+                            if let Some(ducking) = player_part.get_mut_state(&PlayerState::Ducking) {
+                                *ducking = 0.0;
+                            }
                         }
                     }
                 }

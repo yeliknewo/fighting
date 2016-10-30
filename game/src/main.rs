@@ -51,8 +51,9 @@ fn main() {
 
         {
             let base_pos = Vector3::new(-1.0, 0.0, 0.0);
-            let base_rot = Euler::new(Rad(0.0), Rad(std::f32::consts::PI), Rad(0.0));
-            let base_scale = Vector3::new(1.0, 1.0, 1.0);
+            // let base_rot = Euler::new(Rad(0.0), Rad(std::f32::consts::PI), Rad(0.0));
+            let base_rot = Euler::new(Rad(0.0), Rad(0.0), Rad(0.0));
+            let base_scale = Vector3::new(-1.0, 1.0, 1.0);
             let player = Player::One;
             let part_id = PlayerPartId::Arm;
             let layer = layers::PLAYER_1_ARM;
@@ -72,8 +73,9 @@ fn main() {
 
         {
             let base_pos = Vector3::new(-2.0, 0.0, 0.0);
-            let base_rot = Euler::new(Rad(0.0), Rad(std::f32::consts::PI), Rad(0.0));
-            let base_scale = Vector3::new(1.0, 1.0, 1.0);
+            // let base_rot = Euler::new(Rad(0.0), Rad(std::f32::consts::PI), Rad(0.0));
+            let base_rot = Euler::new(Rad(0.0), Rad(0.0), Rad(0.0));
+            let base_scale = Vector3::new(-1.0, 1.0, 1.0);
             let player = Player::One;
             let part_id = PlayerPartId::Body;
             let layer = layers::PLAYER_1_BODY;

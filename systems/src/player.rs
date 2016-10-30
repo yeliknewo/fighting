@@ -1,4 +1,4 @@
-use cgmath::{Matrix4, Vector3};
+use cgmath::Matrix4;
 use cgmath::prelude::One;
 use components::{CompPlayer, PlayerPart, Transform};
 use components::player_part::{PlayerPartId, PlayerState};
@@ -149,8 +149,8 @@ impl System<Delta> for PlayerSystem {
                     PlayerPartId::Arm => {
                         if player_move.punching {
                             if let Some(punching) = player_part.get_mut_state(&PlayerState::Punching) {
-                                *punching = (*punching + delta_time).max(0.0).min(5.0);
-                                scale = scale * Matrix4::from_translation(Vector3::new(1.0 * *punching as Coord, 0.0, 0.0));
+                                *punching = (*punching + delta_time).max(0.0).min(1.0);
+                                scale = scale * Matrix4::from_nonuniform_scale(1.0 + 1.0 * *punching as Coord, 1.0, 1.0);
                                 pos = pos * Matrix4::from_nonuniform_scale(1.0 - *punching as Coord, 1.0, 1.0);
                             }
                         } else {

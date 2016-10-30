@@ -108,8 +108,6 @@ impl RenderSystem {
                     tint: render_data.get_tint(),
                     spritesheet_rect: render_data.get_spritesheet_rect(),
                     spritesheet_size: render_data.get_spritesheet_size(),
-                    mirror_x: render_data.get_mirror_x(),
-                    mirror_y: render_data.get_mirror_y(),
                 });
             }
 

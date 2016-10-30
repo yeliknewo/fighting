@@ -21,6 +21,6 @@ events = { path="../events" }
 
 [features]
 g_glutin = ["core/g_glutin", "graphics/g_glutin", "art/g_glutin", "systems/g_glutin"]
-g_sdl2 = ["core/g_sdl2"]
+g_sdl2 = ["core/g_sdl2", "graphics/g_sdl2", "art/g_sdl2", "systems/g_sdl2"]
 
-default = ["g_glutin"]
+default = ["g_sdl2"]

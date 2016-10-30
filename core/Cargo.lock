@@ -738,10 +738,8 @@ dependencies = [
  "events 0.1.0",
  "find_folder 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "gfx 0.12.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "glutin 0.6.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "graphics 0.1.0",
  "log 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)",
- "sdl2 0.18.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "specs 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "utils 0.1.0",
 ]

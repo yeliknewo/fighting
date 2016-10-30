@@ -56,7 +56,7 @@ fn main() {
             .with(CompPlayer::new(Player::One))
             .with(Transform::new(Vector3::new(0.0, 0.0, 0.0), Euler::new(Rad(0.0), Rad(0.0), Rad(0.0)), Vector3::new(1.0, 1.0, 1.0)))
             .with(main_render.clone())
-            .with(RenderData::new(layers::PLAYER, *main::DEFAULT_TINT, main::PLAYER_1_STAND, main::SIZE))
+            .with(RenderData::new(layers::PLAYER_2, *main::PLAYER_1_TINT, main::PLAYER_STAND, main::SIZE))
             .build();
 
         planner.mut_world()
@@ -65,7 +65,7 @@ fn main() {
             .with(CompPlayer::new(Player::Two))
             .with(Transform::new(Vector3::new(0.0, 0.0, 0.0), Euler::new(Rad(0.0), Rad(0.0), Rad(0.0)), Vector3::new(1.0, 1.0, 1.0)))
             .with(main_render.clone())
-            .with(RenderData::new(layers::PLAYER, *main::DEFAULT_TINT, main::PLAYER_1_STAND, main::SIZE))
+            .with(RenderData::new(layers::PLAYER_2, *main::PLAYER_2_TINT, main::PLAYER_STAND, main::SIZE))
             .build();
 
         let (control_to_player_front_channel, control_to_player_back_channel) = two_way_channel();

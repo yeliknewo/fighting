@@ -15,8 +15,10 @@ pub struct ControlSystem {
 
 #[derive(Debug, Hash, Eq, PartialEq, Clone)]
 enum RepeatEvent {
-    Horizontal(Player),
-    Vertical(Player),
+    Left(Player),
+    Right(Player),
+    Up(Player),
+    Down(Player),
     Joy(Player),
     A(Player),
     B(Player),
@@ -67,10 +69,10 @@ impl ControlSystem {
 
     fn send_repeat(&mut self, event: ControlToPlayer<f64>) {
         match &event {
-            &ControlToPlayer::Up(_, player) => self.repeat_map.insert(RepeatEvent::Vertical(player), event),
-            &ControlToPlayer::Down(_, player) => self.repeat_map.insert(RepeatEvent::Vertical(player), event),
-            &ControlToPlayer::Right(_, player) => self.repeat_map.insert(RepeatEvent::Horizontal(player), event),
-            &ControlToPlayer::Left(_, player) => self.repeat_map.insert(RepeatEvent::Horizontal(player), event),
+            &ControlToPlayer::Up(_, player) => self.repeat_map.insert(RepeatEvent::Up(player), event),
+            &ControlToPlayer::Down(_, player) => self.repeat_map.insert(RepeatEvent::Down(player), event),
+            &ControlToPlayer::Right(_, player) => self.repeat_map.insert(RepeatEvent::Right(player), event),
+            &ControlToPlayer::Left(_, player) => self.repeat_map.insert(RepeatEvent::Left(player), event),
             &ControlToPlayer::Joy(_, _, player) => self.repeat_map.insert(RepeatEvent::Joy(player), event),
             &ControlToPlayer::A(player) => self.repeat_map.insert(RepeatEvent::A(player), event),
             &ControlToPlayer::B(player) => self.repeat_map.insert(RepeatEvent::B(player), event),
@@ -91,7 +93,7 @@ impl ControlSystem {
 
     fn trigger_repeats(&mut self) {
         for value in self.repeat_map.clone().values() {
-            self.player_channel.send(value.clone());
+            self.player_channel.send(value.clone())
         }
     }
 }

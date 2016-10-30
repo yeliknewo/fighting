@@ -32,7 +32,8 @@ pub mod layers {
     use ::Layer;
 
     pub const TILES: Layer = 0;
-    pub const PLAYER: Layer = 1;
+    pub const PLAYER_1: Layer = 1;
+    pub const PLAYER_2: Layer = 2;
 }
 
 pub mod main {
@@ -43,6 +44,9 @@ pub mod main {
     pub const DEFAULT_TINT: Tint = &[0.5, 0.5, 0.5, 1.0];
     pub const ID: RenderType = 0;
 
-    pub const PLAYER_1_STAND: Sprite = &[0.0, 0.0, 32.0, 31.5];
+    pub const PLAYER_STAND: Sprite = &[0.0, 0.0, 32.0, 31.5];
     pub const TEST: Sprite = &[0.0, 0.0, 1.0, 0.5];
+
+    pub const PLAYER_1_TINT: Tint = &[0.0, 0.0, 1.0, 1.0];
+    pub const PLAYER_2_TINT: Tint = &[1.0, 0.0, 0.0, 1.0];
 }

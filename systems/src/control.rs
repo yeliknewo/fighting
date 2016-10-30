@@ -43,6 +43,7 @@ impl ControlSystem {
     }
 
     fn process_main_event(&mut self, event: &MainToControl<f64>) {
+        debug!("Got event from main");
         match event {
             &MainToControl::JoyX(x, player) => self.handle_joy(Some(x), None, player),
             &MainToControl::JoyY(y, player) => self.handle_joy(None, Some(y), player),
@@ -74,16 +75,16 @@ impl ControlSystem {
             &ControlToPlayer::Right(_, player) => self.repeat_map.insert(RepeatEvent::Right(player), event),
             &ControlToPlayer::Left(_, player) => self.repeat_map.insert(RepeatEvent::Left(player), event),
             &ControlToPlayer::Joy(_, _, player) => self.repeat_map.insert(RepeatEvent::Joy(player), event),
-            &ControlToPlayer::A(player) => self.repeat_map.insert(RepeatEvent::A(player), event),
-            &ControlToPlayer::B(player) => self.repeat_map.insert(RepeatEvent::B(player), event),
-            &ControlToPlayer::X(player) => self.repeat_map.insert(RepeatEvent::X(player), event),
-            &ControlToPlayer::Y(player) => self.repeat_map.insert(RepeatEvent::Y(player), event),
-            &ControlToPlayer::L1(player) => self.repeat_map.insert(RepeatEvent::L1(player), event),
-            &ControlToPlayer::L2(player) => self.repeat_map.insert(RepeatEvent::L2(player), event),
-            &ControlToPlayer::R1(player) => self.repeat_map.insert(RepeatEvent::R1(player), event),
-            &ControlToPlayer::R2(player) => self.repeat_map.insert(RepeatEvent::R2(player), event),
-            &ControlToPlayer::Start(player) => self.repeat_map.insert(RepeatEvent::Start(player), event),
-            &ControlToPlayer::Select(player) => self.repeat_map.insert(RepeatEvent::Select(player), event),
+            &ControlToPlayer::A(_, player) => self.repeat_map.insert(RepeatEvent::A(player), event),
+            &ControlToPlayer::B(_, player) => self.repeat_map.insert(RepeatEvent::B(player), event),
+            &ControlToPlayer::X(_, player) => self.repeat_map.insert(RepeatEvent::X(player), event),
+            &ControlToPlayer::Y(_, player) => self.repeat_map.insert(RepeatEvent::Y(player), event),
+            &ControlToPlayer::L1(_, player) => self.repeat_map.insert(RepeatEvent::L1(player), event),
+            &ControlToPlayer::L2(_, player) => self.repeat_map.insert(RepeatEvent::L2(player), event),
+            &ControlToPlayer::R1(_, player) => self.repeat_map.insert(RepeatEvent::R1(player), event),
+            &ControlToPlayer::R2(_, player) => self.repeat_map.insert(RepeatEvent::R2(player), event),
+            &ControlToPlayer::Start(_, player) => self.repeat_map.insert(RepeatEvent::Start(player), event),
+            &ControlToPlayer::Select(_, player) => self.repeat_map.insert(RepeatEvent::Select(player), event),
         };
     }
 
@@ -93,6 +94,7 @@ impl ControlSystem {
 
     fn trigger_repeats(&mut self) {
         for value in self.repeat_map.clone().values() {
+            debug!("Sending event to player");
             self.player_channel.send(value.clone())
         }
     }
@@ -100,7 +102,7 @@ impl ControlSystem {
 
 impl System<Delta> for ControlSystem {
     fn run(&mut self, arg: RunArg, delta_time: Delta) {
-        warn!("Started Control Run");
+        trace!("Started Control Run");
 
         self.time += delta_time;
 
@@ -119,14 +121,14 @@ impl System<Delta> for ControlSystem {
             }
         }
 
-        warn!("Control Got Events");
+        trace!("Control Got Events");
 
         self.trigger_repeats();
 
-        warn!("Control Handled Repeats");
+        trace!("Control Handled Repeats");
 
         arg.fetch(|_| ());
 
-        warn!("Control Exiting");
+        trace!("Control Exiting");
     }
 }

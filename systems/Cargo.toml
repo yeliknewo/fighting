@@ -8,6 +8,7 @@ log = "0.3.6"
 find_folder = "0.3.0"
 specs = "0.7.0"
 gfx = "0.12.1"
+cgmath = "0.12.0"
 graphics = { path="../graphics" }
 components = { path="../components" }
 event_core = { path="../event_core" }

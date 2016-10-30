@@ -25,18 +25,31 @@ impl Transform {
         Transform::new(Vector3::zero(), Euler::new(Rad(0.0), Rad(0.0), Rad(0.0)), Vector3::new(1.0, 1.0, 1.0))
     }
 
-    pub fn set_pos(&mut self, pos: Vector3<GfxCoord>) {
-        self.translation = pos;
+    pub fn get_mut_pos(&mut self) -> &mut Vector3<GfxCoord> {
         self.set_dirty();
+        &mut self.translation
     }
 
-    pub fn add_pos(&mut self, pos_delta: Vector3<GfxCoord>) {
-        self.translation += pos_delta;
+    pub fn get_mut_rot(&mut self) -> &mut Euler<Rad<GfxCoord>> {
         self.set_dirty();
+        &mut self.rotation
     }
 
-    pub fn get_pos(&self) -> Vector3<GfxCoord> {
-        self.translation
+    pub fn get_mut_scale(&mut self) -> &mut Vector3<GfxCoord> {
+        self.set_dirty();
+        &mut self.scale
+    }
+
+    pub fn get_pos(&self) -> &Vector3<GfxCoord> {
+        &self.translation
+    }
+
+    pub fn get_rot(&self) -> &Euler<Rad<GfxCoord>> {
+        &self.rotation
+    }
+
+    pub fn get_scale(&self) -> &Vector3<GfxCoord> {
+        &self.scale
     }
 
     pub fn get_model(&self) -> Matrix4<GfxCoord> {
@@ -53,12 +66,9 @@ impl Transform {
     }
 
     pub fn take_dirty(&mut self) -> bool {
-        if self.dirty {
-            self.dirty = false;
-            true
-        } else {
-            false
-        }
+        let temp = self.dirty;
+        self.dirty = false;
+        temp
     }
 }
 

@@ -63,7 +63,7 @@ impl RenderSystem {
     fn render(&mut self, arg: &RunArg, mut encoder: GlEncoder) {
         use specs::Join;
 
-        warn!("Renderering");
+        trace!("Renderering");
 
         let (render_ids, transforms, cameras, mut render_datas) = arg.fetch(|w| (w.read::<RenderId>(), w.read::<Transform>(), w.read::<Camera>(), w.write::<RenderData>()));
 
@@ -145,7 +145,7 @@ impl RenderSystem {
 
 impl System<Delta> for RenderSystem {
     fn run(&mut self, arg: RunArg, _delta: Delta) {
-        warn!("Render System Run");
+        trace!("Render System Run");
         let mut event = self.main_channel.try_recv();
         while self.process_event(&arg,
                                  match event {

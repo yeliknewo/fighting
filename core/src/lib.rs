@@ -155,29 +155,29 @@ fn start_window<O>(setup: Setup, fixed_delta: Option<f64>, screen_size: (u32, u3
 
     let (width, height): (u32, u32) = screen_size;
 
-    debug!("Making Window");
+    trace!("Making Window");
     let mut gfx_window = build_window((title, width, height));
 
-    debug!("Making Encoder");
+    trace!("Making Encoder");
     let encoder: GlEncoder = gfx_window.get_mut_factory().create_command_buffer().into();
 
     {
         let mut render_event_core = front_event_clump.get_mut_render()
             .unwrap_or_else(|| panic!("Render was none"));
 
-        debug!("Sending Empty Encoder");
+        trace!("Sending Empty Encoder");
         render_event_core.send(MainToRender::Encoder(encoder.clone_empty()));
-        debug!("Sending Encoder");
+        trace!("Sending Encoder");
         render_event_core.send(MainToRender::Encoder(encoder));
     }
 
     let out_color = gfx_window.get_out_color().clone();
     let out_depth = gfx_window.get_out_depth().clone();
 
-    debug!("Making Game");
+    trace!("Making Game");
     let game = Game::new(setup, gfx_window.get_mut_factory(), back_event_clump, ortho.as_ref().clone(), out_color, out_depth, fixed_delta);
 
-    debug!("Making Game Thread");
+    trace!("Making Game Thread");
     let game_handle = thread::spawn(|| {
         let mut game = game;
         while game.frame() {
@@ -185,13 +185,13 @@ fn start_window<O>(setup: Setup, fixed_delta: Option<f64>, screen_size: (u32, u3
     });
 
     'main: loop {
-        debug!("Main Loop");
+        trace!("Main Loop");
         if let Some(event) = front_event_clump.get_mut_render()
             .unwrap_or_else(|| panic!("Render was none"))
             .try_recv() {
             match event {
                 MainFromRender::Encoder(mut encoder) => {
-                    warn!("Got Encoder");
+                    trace!("Got Encoder");
                     if handle_events(&mut gfx_window, &mut front_event_clump) {
                         front_event_clump.get_mut_render()
                             .unwrap_or_else(|| panic!("Render was none"))

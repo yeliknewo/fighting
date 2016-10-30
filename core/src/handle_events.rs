@@ -159,7 +159,7 @@ pub mod sdl2 {
                         }
                     }
                     Event::ControllerButtonDown { timestamp, which, button } => {
-                        debug!("Button Down");
+                        debug!("Controller Button Down");
                         match button {
                             Button::DPadRight => {
                                 front_event_clump.get_mut_control()
@@ -204,17 +204,28 @@ pub mod sdl2 {
                             Button::A => {
                                 front_event_clump.get_mut_control()
                                     .unwrap_or_else(|| panic!("Control was none"))
-                                    .send(MainToControl::Up(1.0,
-                                                            match which {
-                                                                0 => Player::One,
-                                                                1 => Player::Two,
-                                                                _ => continue,
-                                                            }));
+                                    .send(MainToControl::A(true,
+                                                           match which {
+                                                               0 => Player::One,
+                                                               1 => Player::Two,
+                                                               _ => continue,
+                                                           }));
+                            }
+                            Button::X => {
+                                front_event_clump.get_mut_control()
+                                    .unwrap_or_else(|| panic!("Control was none"))
+                                    .send(MainToControl::X(true,
+                                                           match which {
+                                                               0 => Player::One,
+                                                               1 => Player::Two,
+                                                               _ => continue,
+                                                           }));
                             }
                             _ => {}
                         }
                     }
                     Event::ControllerButtonUp { timestamp, which, button } => {
+                        debug!("Controller Button Up");
                         match button {
                             Button::DPadRight => {
                                 front_event_clump.get_mut_control()
@@ -255,6 +266,26 @@ pub mod sdl2 {
                                                                   1 => Player::Two,
                                                                   _ => continue,
                                                               }));
+                            }
+                            Button::A => {
+                                front_event_clump.get_mut_control()
+                                    .unwrap_or_else(|| panic!("Control was none"))
+                                    .send(MainToControl::A(false,
+                                                           match which {
+                                                               0 => Player::One,
+                                                               1 => Player::Two,
+                                                               _ => continue,
+                                                           }));
+                            }
+                            Button::X => {
+                                front_event_clump.get_mut_control()
+                                    .unwrap_or_else(|| panic!("Control was none"))
+                                    .send(MainToControl::X(false,
+                                                           match which {
+                                                               0 => Player::One,
+                                                               1 => Player::Two,
+                                                               _ => continue,
+                                                           }));
                             }
                             _ => {}
                         }

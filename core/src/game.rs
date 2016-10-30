@@ -1,5 +1,5 @@
 use ::{Setup, SetupNoRender};
-use components::{Camera, CompMoving, CompPlayer, RenderData, RenderId, Transform};
+use components::{Camera, CompPlayer, PlayerPart, RenderData, RenderId, Transform};
 
 use event_clump::BackEventClump;
 use event_core::two_way_channel::BackChannel;
@@ -25,7 +25,6 @@ impl Game {
             let mut world = World::new();
 
             world.register::<Camera>();
-            world.register::<CompMoving>();
             world.register::<CompPlayer>();
             world.register::<RenderData>();
             world.register::<RenderId>();
@@ -106,8 +105,8 @@ impl Game {
             let mut world = World::new();
 
             world.register::<Camera>();
-            world.register::<CompMoving>();
             world.register::<CompPlayer>();
+            world.register::<PlayerPart>();
             world.register::<RenderData>();
             world.register::<RenderId>();
             world.register::<Transform>();
@@ -218,7 +217,7 @@ impl Game {
     }
 
     pub fn frame(&mut self) -> bool {
-        warn!("Game Loop");
+        trace!("Game Loop");
         let delta = match self.delta {
             Some(delta) => delta,
             None => {
@@ -238,7 +237,7 @@ impl Game {
             }
         }
 
-        warn!("Finished Game Loop");
+        trace!("Finished Game Loop");
 
         true
     }
